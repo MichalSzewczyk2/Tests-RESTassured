@@ -8,10 +8,6 @@ import org.testng.annotations.Test;
 
 public class PetTest {
 
-
-
-
-
     @Test(priority = 1)
     public void whenPetCreated_thenOK() {
         RestAssured.baseURI = "https://swaggerpetstore.przyklady.javastart.pl/v2";
