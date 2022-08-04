@@ -18,6 +18,7 @@ public class StoreTest {
     public void beforeTest(){
         faker = new Faker();
         orderPayload = new Order();
+
         orderPayload.setId(faker.idNumber().hashCode());
         orderPayload.setPetId(faker.idNumber().hashCode());
         orderPayload.setQuantity(faker.number().numberBetween(0,10));

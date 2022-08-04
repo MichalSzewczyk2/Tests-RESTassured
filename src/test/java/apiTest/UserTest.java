@@ -1,128 +1,79 @@
 package apiTest;
 
-import io.restassured.RestAssured;
-import io.restassured.path.json.JsonPath;
+import apiEngineEndpoints.UserEndpoints;
+import apiPayload.User;
+import com.github.javafaker.Faker;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-import org.json.JSONObject;
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 
 public class UserTest {
 
+    Faker faker;
+    User userPayload;
+
+    @BeforeTest
+    public void beforeTest(){
+        faker = new Faker();
+        userPayload = new User();
+
+        userPayload.setId(faker.idNumber().hashCode());
+        userPayload.setUsername(faker.name().username());
+        userPayload.setFirstName(faker.name().firstName());
+        userPayload.setLastName(faker.name().lastName());
+        userPayload.setEmail(faker.internet().emailAddress());
+        userPayload.setPassword(faker.internet().password());
+        userPayload.setPhone(faker.phoneNumber().cellPhone());
+        userPayload.setUserStatus(faker.number().hashCode());
+    }
+
+
     @Test(priority = 1)
-    public void whenUserCreated_thenOK(){
-        RestAssured.baseURI = "https://swaggerpetstore.przyklady.javastart.pl/v2/";
-        RequestSpecification request = RestAssured.given();
+    public void testPostUser(){
 
-        JSONObject requestParameters = new JSONObject(
-                "{\r\n  \"id\": 20,\r\n  " +
-                        "\"username\": \"testUsername\",\r\n  " +
-                        "\"firstName\": \"testFirstName\",\r\n  " +
-                        "\"lastName\": \"testLastName\",\r\n  " +
-                        "\"email\": \"testEmail\",\r\n  " +
-                        "\"password\": \"testPassword\",\r\n  " +
-                        "\"phone\": \"testPhone\",\r\n  " +
-                        "\"userStatus\": 0\r\n}"
-        );
-        request.header("Content-Type", "application/json");
-        request.body(requestParameters.toString());
+        String payload = userPayload.toString();
 
-        Response response = request.post("/user");
-        Assert.assertEquals(response.statusCode(), 200);
+        Response response = UserEndpoints.createUser(payload);
+        response.then().log().all();
+        Assert.assertEquals(response.getStatusCode(),200);
+        Assert.assertTrue(response.getStatusLine().contains("OK"));
+
     }
 
     @Test(priority = 2)
-    public void whenUserGetContentMatch_thenOK(){
-        RestAssured.baseURI = "https://swaggerpetstore.przyklady.javastart.pl/v2/";
-        Response response = RestAssured.get("/user/testUsername");
+    public void testGetUserByUsername(){
 
-        JsonPath jsonPath = response.jsonPath();
-
-        String id = jsonPath.get("id")+"";
-        Assert.assertEquals(id, "20");
-
-        String username = jsonPath.get("username")+"";
-        Assert.assertEquals(username, "testUsername");
-
-        String firstName = jsonPath.get("firstName")+"";
-        Assert.assertEquals(firstName, "testFirstName");
-
-        String lastName = jsonPath.get("lastName")+"";
-        Assert.assertEquals(lastName, "testLastName");
-
-        String email = jsonPath.get("email")+"";
-        Assert.assertEquals(email, "testEmail");
-
-        String password = jsonPath.get("password")+"";
-        Assert.assertEquals(password, "testPassword");
-
-        String phone = jsonPath.get("phone")+"";
-        Assert.assertEquals(phone, "testPhone");
-
-        Assert.assertEquals(response.statusCode(), 200);
+        Response response = UserEndpoints.readUser(userPayload.getUsername());
+        response.then().log().body().statusCode(200);
     }
 
     @Test(priority = 3)
     public void whenUserUpdate_thenOK(){
-        RestAssured.baseURI = "https://swaggerpetstore.przyklady.javastart.pl/v2";
-        RequestSpecification request = RestAssured.given();
+        User newUserPayload = new User();
+        newUserPayload.setId(userPayload.getId());
+        newUserPayload.setUsername(userPayload.getUsername());
+        newUserPayload.setFirstName(userPayload.getFirstName() + "is first name");
+        newUserPayload.setLastName(userPayload.getLastName() + " is last name");
+        newUserPayload.setEmail(userPayload.getEmail() + " is email");
+        newUserPayload.setPassword(userPayload.getPassword() + "is password");
+        newUserPayload.setPhone(userPayload.getPhone() + " is phone");
+        newUserPayload.setUserStatus(userPayload.getUserStatus());
 
-        JSONObject requestParameters = new JSONObject(
-                "{\r\n  \"id\": 20,\r\n  " +
-                        "\"username\": \"testUsername\",\r\n  " +
-                        "\"firstName\": \"updateTestFirstName\",\r\n  " +
-                        "\"lastName\": \"updateTestLastName\",\r\n  " +
-                        "\"email\": \"updateTestEmail\",\r\n  " +
-                        "\"password\": \"updateTestPassword\",\r\n  " +
-                        "\"phone\": \"updateTestPhone\",\r\n  " +
-                        "\"userStatus\": 0\r\n}"
-        );
-        request.header("Content-Type", "application/json");
-        request.body(requestParameters.toString());
+        String payload = newUserPayload.toString();
 
-        Response response = request.put("/user/testUsername");
-        Assert.assertEquals(response.statusCode(), 200);
+        Response response = UserEndpoints.updateUser(newUserPayload.getUsername(), payload);
+        response.then().log().body().statusCode(200);
+
+        Response afterUpdateResponse = UserEndpoints.readUser(newUserPayload.getUsername());
+        afterUpdateResponse.then().log().body().statusCode(200);
+
     }
 
     @Test(priority = 4)
-    public void whenUpdatedUserGetContentMatch_thenOK(){
-        RestAssured.baseURI = "https://swaggerpetstore.przyklady.javastart.pl/v2/";
-        Response response = RestAssured.get("/user/testUsername");
-
-        JsonPath jsonPath = response.jsonPath();
-
-        String id = jsonPath.get("id")+"";
-        Assert.assertEquals(id, "20");
-
-        String username = jsonPath.get("username")+"";
-        Assert.assertEquals(username, "testUsername");
-
-        String firstName = jsonPath.get("firstName")+"";
-        Assert.assertEquals(firstName, "updateTestFirstName");
-
-        String lastName = jsonPath.get("lastName")+"";
-        Assert.assertEquals(lastName, "updateTestLastName");
-
-        String email = jsonPath.get("email")+"";
-        Assert.assertEquals(email, "updateTestEmail");
-
-        String password = jsonPath.get("password")+"";
-        Assert.assertEquals(password, "updateTestPassword");
-
-        String phone = jsonPath.get("phone")+"";
-        Assert.assertEquals(phone, "updateTestPhone");
-
-        Assert.assertEquals(response.statusCode(), 200);
-    }
-
-    @Test(priority = 5)
     public void whenPetDelete_thenOK(){
-        RestAssured.baseURI = "https://swaggerpetstore.przyklady.javastart.pl/v2/";
-        Response response = RestAssured.delete("/user/testUsername");
-
-        Assert.assertEquals(response.statusCode(), 200);
-
+        Response response = UserEndpoints.deleteUser(userPayload.getUsername());
+        response.then().log().body().statusCode(200);
     }
 }

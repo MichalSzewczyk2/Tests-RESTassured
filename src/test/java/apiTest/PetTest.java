@@ -17,6 +17,7 @@ public class PetTest {
     public void beforeTest(){
         faker = new Faker();
         petPayload = new Pet();
+
         petPayload.setId(faker.idNumber().hashCode());
         petPayload.setCategoryId(faker.idNumber().hashCode());
         petPayload.setCategoryName(faker.animal().name());
