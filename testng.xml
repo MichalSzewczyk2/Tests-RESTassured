@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="C:/Users/miste/Desktop/Rekrutacja/Cloudentity/Zadanie">
+        <classes>
+            <class name="apiTest.PetTest">
+                <methods>
+                    <include name="testPostPet"/>
+                    <include name="testGetUserById"/>
+                    <include name="testUpdatePetById"/>
+                    <include name="testDeletePetById"/>
+                </methods>
+            </class>
+            <class name="apiTest.PetUpdateTest">
+                <methods>
+                    <include name="postAndLoadPet"/>
+                    <include name="updatePetWithFormData"/>
+                    <include name="deletePet"/>
+                </methods>
+            </class>
+            <class name="apiTest.StoreTest">
+                <methods>
+                    <include name="testPostOrder"/>
+                    <include name="testGetOrderById"/>
+                    <include name="testDeleteOrderById"/>
+                </methods>
+            </class>
+            <class name="apiTest.UserListTest">
+                <methods>
+                    <include name="testCreateUsersWithList"/>
+                    <include name="testGetMultipleUserByUsername"/>
+                    <include name="testLoginLogoutMultipleUsers"/>
+                    <include name="testUpdateMultipleUsers"/>
+                    <include name="testDeleteMultipleUsers"/>
+                </methods>
+            </class>
+            <class name="apiTest.UserTest">
+                <methods>
+                    <include name="testPostUser"/>
+                    <include name="testGetUserByUsername"/>
+                    <include name="testLoginUser"/>
+                    <include name="testLogoutUser"/>
+                    <include name="whenUserUpdate_thenOK"/>
+                    <include name="whenPetDelete_thenOK"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
