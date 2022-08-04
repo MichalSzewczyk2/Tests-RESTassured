@@ -22,10 +22,10 @@ public class PetTest {
         petPayload.setCategoryId(faker.idNumber().hashCode());
         petPayload.setCategoryName(faker.animal().name());
         petPayload.setName(faker.name().name());
-        petPayload.setPhotoUrls(faker.internet().url());
+        petPayload.setName(faker.name().name());
         petPayload.setTagId(faker.idNumber().hashCode());
         petPayload.setTagName(faker.bothify("???????"));
-        petPayload.setStatus(faker.bothify("???????"));
+        petPayload.setStatus(petPayload.randomStatus());
     }
 
     @Test(priority = 1)

@@ -30,6 +30,30 @@ public class UserEndpoints {
         return response;
     }
 
+    public static Response loginUser(String username, String password){
+        RestAssured.baseURI = Routes.baseURI;
+        Response response = RestAssured.
+                given().queryParam("username", username).
+                queryParam("password", password).
+                when().get(Routes.loginUserURI);
+        return response;
+    }
+
+    public static Response logoutUser(){
+        RestAssured.baseURI = Routes.baseURI;
+        Response response = RestAssured.
+                given().when().get(Routes.logoutUserURI);
+        return response;
+    }
+
+    public static Response createUserUsingList(String payload){
+        RestAssured.baseURI = Routes.baseURI;
+        Response response = RestAssured.
+                given().contentType(ContentType.JSON).accept(ContentType.JSON).body(payload).
+                when().post(Routes.postListUsersURI);
+        return response;
+    }
+
     public static Response deleteUser(String username){
         RestAssured.baseURI = Routes.baseURI;
         Response response = RestAssured.

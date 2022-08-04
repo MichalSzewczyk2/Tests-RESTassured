@@ -30,6 +30,15 @@ public class PetEndpoints {
         return response;
     }
 
+    public static Response updateForms(int id, String name, String status){
+        RestAssured.baseURI = Routes.baseURI;
+        Response response = RestAssured.
+                given().pathParam("id" ,id).
+                param("name", name).param("status", status).
+                when().post(Routes.postUpdatePetURI);
+        return response;
+    }
+
     public static Response deletePet(int id){
         RestAssured.baseURI = Routes.baseURI;
         Response response = RestAssured.

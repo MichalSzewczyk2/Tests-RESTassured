@@ -22,9 +22,9 @@ public class StoreTest {
         orderPayload.setId(faker.idNumber().hashCode());
         orderPayload.setPetId(faker.idNumber().hashCode());
         orderPayload.setQuantity(faker.number().numberBetween(0,10));
-        orderPayload.setShipDate("2022-08-03T15:01:36.875Z");
-        orderPayload.setStatus(faker.bothify("placed"));
-        orderPayload.setComplete(faker.bothify("true"));
+        orderPayload.setShipDate(orderPayload.randomShipDate());
+        orderPayload.setStatus(orderPayload.randomStatus());
+        orderPayload.setComplete(orderPayload.randomComplete());
     }
 
     @Test(priority = 1)

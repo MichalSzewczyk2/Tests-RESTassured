@@ -1,5 +1,7 @@
 package apiPayload;
 
+import com.github.javafaker.Faker;
+
 public class Pet {
 
     private int id;
@@ -73,6 +75,13 @@ public class Pet {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String randomStatus(){
+        String[] status ={"available","pending","sold"};
+        Faker random = new Faker();
+        int statusInt = random.number().numberBetween(0,2);
+        return status[statusInt];
     }
 
     @Override

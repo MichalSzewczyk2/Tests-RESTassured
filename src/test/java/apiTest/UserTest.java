@@ -44,12 +44,23 @@ public class UserTest {
 
     @Test(priority = 2)
     public void testGetUserByUsername(){
-
         Response response = UserEndpoints.readUser(userPayload.getUsername());
         response.then().log().body().statusCode(200);
     }
 
     @Test(priority = 3)
+    public void testLoginUser(){
+        Response response = UserEndpoints.loginUser(userPayload.getUsername(), userPayload.getPassword());
+        response.then().log().body().statusCode(200);
+    }
+
+    @Test(priority = 4)
+    public void testLogoutUser(){
+        Response response = UserEndpoints.logoutUser();
+        response.then().log().body().statusCode(200);
+    }
+
+    @Test(priority = 5)
     public void whenUserUpdate_thenOK(){
         User newUserPayload = new User();
         newUserPayload.setId(userPayload.getId());
@@ -68,10 +79,9 @@ public class UserTest {
 
         Response afterUpdateResponse = UserEndpoints.readUser(newUserPayload.getUsername());
         afterUpdateResponse.then().log().body().statusCode(200);
-
     }
 
-    @Test(priority = 4)
+    @Test(priority = 6)
     public void whenPetDelete_thenOK(){
         Response response = UserEndpoints.deleteUser(userPayload.getUsername());
         response.then().log().body().statusCode(200);
