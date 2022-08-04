@@ -1,3 +1,5 @@
+package apiTest;
+
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -85,7 +87,7 @@ public class UserTest {
     }
 
     @Test(priority = 4)
-    public void whenUpdetedUserGetContentMatch_thenOK(){
+    public void whenUpdatedUserGetContentMatch_thenOK(){
         RestAssured.baseURI = "https://swaggerpetstore.przyklady.javastart.pl/v2/";
         Response response = RestAssured.get("/user/testUsername");
 
